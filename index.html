@@ -4,17 +4,22 @@
     <meta charset="utf-8">
     <title>BotUI - Hello World</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/botui/build/botui.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/botui/build/botui-theme-default.css" />
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
-  	<div class="into">
-  		
-  	</div>
+  	<header class="text-center">
+		<img src="images/abhishek.png" alt="">
+		<h1>Abhishek Chakravarty</h1>
+		<h2>Software Engineer</h2>
+	</header>
     <div class="botui-app-container" id="chat-container">
-      <bot-ui></bot-ui>
+		<bot-ui></bot-ui>
     </div>
-    <script src="https://cdn.jsdelivr.net/vue/latest/vue.min.js"></script>
+    <script src="https://npmcdn.com/vue@2.0.7/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/botui/build/botui.js"></script>
     <script>
       var botui = new BotUI('chat-container');
@@ -23,12 +28,324 @@
         content: 'Hello 👋, I am Abhishek.'
       }).then(function () {
 
-        botui.message.bot({
+        return botui.message.bot({
           delay: 1000,
           loading: true,
           content: 'I am a software engineer from India 🇮🇳.'
         });
+      }).then(function () {
+
+        return botui.message.bot({
+          delay: 500,
+          loading: true,
+          content: 'Wanna know more about me?'
+        });
+      }).then(function () {
+
+        botui.action.button({
+    	  addMessage: false,
+          action: [
+		    { 
+		      text: 'Yeah 🤔',
+		      value: 'more'
+		    },
+		    { 
+		      text: "Nope! 🙅‍",
+		      value: 'no_interest'
+		    }
+		  ]
+        }).then(function (res) {
+        	var msg = res.text;
+        	if(res.value == 'more') msg = 'Carry on!'
+
+        	botui.message.human({
+        		content: msg
+        	});
+
+			if(res.value == 'more') talkMore();
+			else noInterest();
+			
+		  });
       });
+
+
+
+      function noInterest() {
+      	botui.message.add({
+      		delay: 500,
+      		loading: true,
+      		content: "Okay 🙁"
+      	}).then(function() {
+      		return botui.message.add({
+      			delay: 500,
+      			loading: true,
+      			content: "In case you change your mind and want to contact me please rech out on [LinkedIn](https://www.linkedin.com/in/abhishek-chakravarty/)^"
+      		})
+      	}).then(function() {
+      		return botui.message.add({
+      			delay: 500,
+      			loading: true,
+      			content: "*reach out"
+      		})
+      	}).then(function() {
+      		return botui.message.add({
+      			delay: 500,
+      			loading: true,
+      			content: "Untill then... Goodbye 👋"
+      		})
+      	});
+      }
+
+	  function talkMore() {
+	  	return botui.message.add({
+	  		 content: "Thanks for taking interest 🙏"
+	  	}).then(function() {
+	  	    return botui.message.add({
+	  		delay: 500,
+	  		loading: true,
+	  		html: true,
+			content: 'Currently I am working as a Senior Software Engineer 👨‍💻 in <a href="https://squareboat.com" target="_blank">SquareBoat Gurgaon</a>'
+		}).then(function () {
+			return botui.message.add({
+	  		delay: 1500,
+	  		loading: true,
+			content: "I have more than 4 years of experience in developing web and mobile apps."
+			});
+		}).then(function () {
+			return botui.message.add({
+	  		delay: 1500,
+	  		loading: true,
+			content: "In my free time I spend lots of time in reading and writing on [Quora](https://www.quora.com/profile/Abhishek-Chakravarty-2)^"
+			});
+		}).then(function () {
+			return botui.message.add({
+	  		delay: 2000,
+	  		loading: true,
+			content: "One of my [answer](https://www.quora.com/Who-are-the-lesser-known-people-of-India/answer/Abhishek-Chakravarty-2?share=f6550125&srid=nMwx) got 400k+ views and 28k+ upvotes! 😎"
+			});
+		})
+		.then(function () 
+		{
+			return botui.action.button({
+	          action: [
+			    { 
+			      text: "That's impressive!",
+			      value: 'impressive'
+			    },
+			    { 
+			      text: "So what? 🙅‍",
+			      value: 'so'
+			    }
+			  ]
+	        }).then(function (res) {
+	        	var msg = '';
+				if(res.value == 'impressive') {
+					return botui.message.bot({
+				  		delay: 1000,
+				  		loading: true,
+						content: "Yes it is 😎"
+					}).then(function () {
+						return botui.message.add({
+				  		delay: 300,
+				  		loading: true,
+						content: "I even wrote about my experience working in SquareBoat on Quora. [My answer to how it's like to work in SquareBoat](https://qr.ae/TUvdFb)^"
+						});
+					})
+				}
+				else {
+					return botui.message.bot({
+				  		delay: 1000,
+				  		loading: true,
+						content: "Oh that's not appealing to you? 😕"
+					}).then(function () {
+						return botui.message.add({
+				  		delay: 300,
+				  		loading: true,
+						content: "You know what?"
+						});
+					})
+				}
+			  });
+		})
+		.then(function() {
+			return botui.message.add({
+				delay: 1000,
+				loading: true,
+				content: 'I sometimes help developer community in Stackoverflow. 🤓 [![Stackoverflow Profile](https://stackoverflow.com/users/flair/3476207.png)](https://stackoverflow.com/users/3476207/abhishek)'
+			})
+		}).then(function() {
+			return botui.action.button({
+	          action: [
+			    { 
+			      text: "Ok",
+			      value: 'ok'
+			    },
+			    { 
+			      text: "Anything else?",
+			      value: 'more'
+			    }
+			  ]
+	        })
+		})
+		.then(function() {
+			return botui.message.add({
+				delay: 1000,
+				loading: true,
+				content: 'I have also built [Webooly](https://webooly.com/)'
+			})
+		})
+		.then(function() {
+			return botui.action.button({
+	          action: [
+			    { 
+			      text: "What's that?",
+			      value: 'webooly'
+			    },
+			    { 
+			      text: "I know that.",
+			      value: 'know'
+			    }
+			  ]
+	        }).then(function (res) {
+	        	var msg = '';
+				if(res.value == 'webooly') {
+					return botui.message.bot({
+				  		delay: 1000,
+				  		loading: true,
+						content: "Webooly is a tool to get your business website in 5 seconds flat using just your Facebook page."
+					}).then(function() {
+						return botui.action.button({
+							action: [
+							    { 
+							      text: "That's Nice! 👍",
+							      value: 'nice'
+							    },
+							    { 
+							      text: "Okay 🤷‍♂️",
+							      value: 'ok'
+							    }
+							  ]
+						}).then(function(res) {
+							if(res.value == 'nice') {
+								return botui.message.bot({
+									delay: 1000,
+							  		loading: true,
+									content: 'Yes it is 😎'
+								})
+							}else {
+								return botui.message.bot({
+									delay: 1000,
+							  		loading: true,
+									content: 'hmm...'
+								})
+							}
+						});
+					})
+				}
+				else {
+					return botui.message.bot({
+				  		delay: 1000,
+				  		loading: true,
+						content: "Cool!"
+					});
+				}
+			  });
+		})
+		.then(function() {
+			return botui.message.add({
+	  		delay: 1000,
+	  		loading: true,
+			content: "Apart from this, I am interested in building chat bots these days 🤖."
+			});
+		})
+		.then(function() {
+			return botui.message.add({
+	  		delay: 1000,
+	  		loading: true,
+			content: "Like the one you are talking with right now."
+			});
+		})
+		.then(function() {
+			return botui.message.add({
+	  		delay: 800,
+	  		loading: true,
+			content: "But of course little better, this one is dumb 😛"
+			});
+		})
+		.then(function() {
+			return botui.message.add({
+	  		delay: 2000,
+	  		loading: true,
+			content: "Alright! Enough for today."
+			});
+		})
+		.then(function() {
+			return botui.message.add({
+	  		delay: 1000,
+	  		loading: true,
+			content: "Want to get in touch with me?"
+			});
+		}).then(function() {
+			return botui.action.button({
+	    	  addMessage: false,
+	          action: [
+			    { 
+			      text: "Yes",
+			      value: 'yes'
+			    },
+			    { 
+			      text: "No",
+			      value: 'no'
+			    }
+			  ]
+	        }).then(function (res) {
+	        	var msg = '';
+				if(res.value == 'yes') {
+					showContactDetails();
+				}
+				else {
+					return botui.message.bot({
+				  		delay: 1000,
+				  		loading: true,
+						content: "Okay!"
+					}).then(function() {
+						endChat();
+					});
+				}
+			});
+		});
+		});
+	  }
+
+	  function showContactDetails() {
+	  	botui.message.add({
+	  		delay: 500,
+	  		loading: true,
+	  		content: "You can shoot me an email at [abhi072592@gmail.com](mailto:someone@example.com)^"
+	  	}).then(function () {
+			return botui.message.add({
+	  		delay: 1500,
+	  		loading: true,
+			content: "Or connect with me on [LinkedIn](https://www.linkedin.com/in/abhishek-chakravarty/)^"
+			});
+		}).then(function () {
+			return botui.message.add({
+	  		delay: 1400,
+	  		loading: true,
+			content: "Or if in a hurry call or whatsapp me at +91-8447999488."
+			});
+		}).then(function() {
+			endChat();
+		})
+	  }
+
+	  function endChat() {
+	  	botui.message.add({
+	  		delay: 1000,
+	  		loading: true,
+	  		content: "Bye 👋 Nice to talk to you. 😇"
+	  	})
+	  }
     </script>
   </body>
 </html>
